@@ -1,59 +1,37 @@
 package com.example.mad_practical_2_21012011128
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
-    val TAG="MainActivity"
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        showMessage("onCreate method is called")
-    }
-    fun showMessage(message: String){
-        Log.i(TAG, message)
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        val v:ConstraintLayout?=findViewById(R.id.myConstraintLayout)
-        if (v!=null)
-        {
-            Snackbar.make(v,
-            message,
-            Snackbar.LENGTH_SHORT
-            ).show()
 
+        val playButton:FloatingActionButton = findViewById(R.id.play)
+        playButton.setOnClickListener {
+            PlayPause()
+        }
 
+        val pauseButton:FloatingActionButton = findViewById(R.id.pause)
+        pauseButton.setOnClickListener {
+            Stop()
         }
     }
-    override fun onStart() {
-        super.onStart()
-        showMessage("onStart method is called")
+    fun PlayPause(){
+        Intent(applicationContext,MyService::class.java).putExtra(MyService.PLAYERKEY,MyService.PLAYERVALUE).apply {
+            startService(this)
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        showMessage("onResume method is called")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        showMessage("onPause method is called")
-
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        showMessage("onStop method is called")
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        showMessage("onDestroy method is called")
-
+    fun Stop(){
+        Intent(applicationContext,MyService::class.java).putExtra(MyService.PLAYERKEY,MyService.PLAYERVALUE).apply {
+            stopService(this)
+        }
     }
 }
